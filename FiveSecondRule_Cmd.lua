@@ -85,15 +85,17 @@ end
 
 function FiveSecondRule_Cmd:ChangeSettings(name, value)
     if type(value) == "string" then
-        DEFAULT_CHAT_FRAME:AddMessage(FiveSecondRule_AddonName .. ": Changed '" .. name .. "' from " .. FiveSecondRule_Settings[name] .. " to " .. value)
+        DEFAULT_CHAT_FRAME:AddMessage(FiveSecondRule_AddonName .. ": Changed '" .. name .. "' from " .. FiveSecondRule_Config[name] .. " to " .. value)
     elseif type(value) == "boolean" then
         DEFAULT_CHAT_FRAME:AddMessage(FiveSecondRule_AddonName .. ": '" .. name .. "' " .. (value and "enabled" or "disabled")) -- simulating ternary operator
     end
-    FiveSecondRule_Settings[name] = value
+    FiveSecondRule_Config[name] = value
 end
 
 function FiveSecondRule_Cmd:ResetSettings()
-    FiveSecondRule_Settings = FiveSecondRule_Utils:ShallowCopy(FiveSecondRule_Defaults)
+    FiveSecondRule_Config.manaLossColor = FiveSecondRule.defaultConfig.manaLossColor
+    FiveSecondRule_Config.manaGainColor = FiveSecondRule.defaultConfig.manaGainColor
+    FiveSecondRule_Config.showText = FiveSecondRule.defaultConfig.showText
     DEFAULT_CHAT_FRAME:AddMessage(FiveSecondRule_AddonName .. ": Default settings restored.")
 end
 

@@ -26,7 +26,20 @@ FiveSecondRule = {
     manaTickTimer = 0,          -- Timer for displaying manaTickText
     fadeTimer = 0,              -- Timer for fading manaTickText
     tickStartTime = nil,        -- Start time for tickSpark animation
+    defaultConfig = {
+        manaLossColor = "800080",
+        manaGainColor = "80A6FF",
+        showText = true,
+    }
 }
+
+-- store addon configuration in global var
+FiveSecondRule_Config = {}
+
+-- initialize with default values
+if not FiveSecondRule_Config.manaLossColor then FiveSecondRule_Config.manaLossColor = FiveSecondRule.defaultConfig.manaLossColor end
+if not FiveSecondRule_Config.manaGainColor then FiveSecondRule_Config.manaGainColor = FiveSecondRule.defaultConfig.manaGainColor end
+if not FiveSecondRule_Config.showText then FiveSecondRule_Config.showText = FiveSecondRule.defaultConfig.showText end
 
 local FiveSecondRuleFrame = CreateFrame("Frame", "FiveSecondRuleFrame", UIParent)
 FiveSecondRuleFrame:SetFrameStrata("HIGH")
@@ -165,7 +178,7 @@ function FiveSecondRule:OnUpdate()
         -- Set manaTickText to display consumed mana in deep purple (hex color 800080)
         manaTickText:SetText(self:ManaLossText(manaUsed))
         manaTickText:SetAlpha(1)
-        if FiveSecondRule_Settings.showText then manaTickText:Show() end
+        if FiveSecondRule_Config.showText then manaTickText:Show() end
 
         -- Uncomment for debugging if needed:
         -- DEFAULT_CHAT_FRAME:AddMessage("Mana used: -" .. manaUsed)
@@ -183,7 +196,7 @@ function FiveSecondRule:OnUpdate()
         -- Display observed gain as a positive number
         manaTickText:SetText(self:ManaGainText(observedGain))
         manaTickText:SetAlpha(1)
-        if FiveSecondRule_Settings.showText then manaTickText:Show() end
+        if FiveSecondRule_Config.showText then manaTickText:Show() end
         self.manaTickTimer = now
         self.fadeTimer = now
 
@@ -214,7 +227,7 @@ function FiveSecondRule:OnEvent(event)
             local manaUsed = FiveSecondRule.previousMana - currentMana
             manaTickText:SetText(self:ManaLossText(manaUsed))
             manaTickText:SetAlpha(1)
-            if FiveSecondRule_Settings.showText then manaTickText:Show() end
+            if FiveSecondRule_Config.showText then manaTickText:Show() end
             -- Uncomment for debugging if needed:
             -- DEFAULT_CHAT_FRAME:AddMessage("Mana used (event): -" .. manaUsed)
             FiveSecondRule.tickStartTime = nil
@@ -224,11 +237,11 @@ function FiveSecondRule:OnEvent(event)
 end
 
 function FiveSecondRule:ManaLossText(msg)
-    return "|cff" .. FiveSecondRule_Settings.manaLossColor .. "-" .. msg .. "|r"
+    return "|cff" .. FiveSecondRule_Config.manaLossColor .. "-" .. msg .. "|r"
 end
 
 function FiveSecondRule:ManaGainText(msg)
-    return "|cff" .. FiveSecondRule_Settings.manaGainColor .. "+" .. msg .. "|r"
+    return "|cff" .. FiveSecondRule_Config.manaGainColor .. "+" .. msg .. "|r"
 end
 
 -----------------------------------------------------------
