@@ -7,4 +7,5 @@
 ## SavedVariablesPerCharacter: FiveSecondRule_Config
 
 FiveSecondRule.lua
-FiveSecondRule_Cmd.lua
+helpers.lua
+slash.lua

@@ -19,6 +19,8 @@
 
 -- Global addon table.
 FiveSecondRule = {
+    ADDON_COLOR = "ff3378f0",
+    ADDON_NAME = "FiveSecondRule",
     lastManaUseTime = 0,        -- Time when mana was last used (to start FSRSpark countdown)
     mp5Delay = 5,               -- 5-second rule delay for FSRSpark
     previousMana = UnitMana("player"),  -- Tracks the player's last known mana
@@ -36,10 +38,16 @@ FiveSecondRule = {
 -- store addon configuration in global var
 FiveSecondRule_Config = {}
 
--- initialize with default values
-if not FiveSecondRule_Config.manaLossColor then FiveSecondRule_Config.manaLossColor = FiveSecondRule.defaultConfig.manaLossColor end
-if not FiveSecondRule_Config.manaGainColor then FiveSecondRule_Config.manaGainColor = FiveSecondRule.defaultConfig.manaGainColor end
-if not FiveSecondRule_Config.showText then FiveSecondRule_Config.showText = FiveSecondRule.defaultConfig.showText end
+FiveSecondRule.resetConfig = function(_)
+    for conf, value in pairs(FiveSecondRule.defaultConfig) do
+        FiveSecondRule_Config[conf] = value
+    end
+end
+
+-- initialize config with default values if it's is empty
+if next(FiveSecondRule_Config) == nil then
+    FiveSecondRule.resetConfig()
+end
 
 local FiveSecondRuleFrame = CreateFrame("Frame", "FiveSecondRuleFrame", UIParent)
 FiveSecondRuleFrame:SetFrameStrata("HIGH")
